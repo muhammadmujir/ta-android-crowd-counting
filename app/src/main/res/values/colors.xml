@@ -1,10 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+
+    <color name="colorPrimary">@color/colorYellowDark_F1B815</color>
+    <color name="colorPrimaryDark">@color/colorYellowDark_CB9805</color>
+    <color name="colorAccent">@color/colorYellowDark_E3BD4E</color>
+
+    <!-- grey family -->
+    <color name="colorBlackDark_242424">#242424</color>
+    <color name="colorBlackDark_767676">#767676</color>
+    <color name="colorBlackLight_ACA8A8">#aca8a8</color>
+    <color name="colorBlackLight_D1D1CF">#d1d1cf</color>
+
+    <!-- yellow family -->
+    <color name="colorYellowDark_F1B815">#f1b815</color>
+    <color name="colorYellowDark_CB9805">#cb9805</color>
+    <color name="colorYellowDark_E3BD4E">#e3bd4e</color>
+
+    <!-- red family -->
+    <color name="colorRedDark_C42625">#c42625</color>
+
+    <!-- green family -->
+    <color name="colorGreenDark_3E8606">#4b9f16</color>
+
+    <!-- Text Color -->
+    <color name="colorTextPrimary">@color/colorBlackDark_242424</color>
+    <color name="colorTextSecondary">@color/colorBlackDark_767676</color>
+    <color name="colorTextAccent">@color/colorBlackLight_D1D1CF</color>
 </resources>

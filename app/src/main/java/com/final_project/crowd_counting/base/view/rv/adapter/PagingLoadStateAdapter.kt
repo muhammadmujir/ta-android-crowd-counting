@@ -7,7 +7,7 @@ import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.final_project.crowd_counting.base.databinding.ItemNetworkStateBinding
+import com.final_project.crowd_counting.databinding.ItemNetworkStateBinding
 
 class PagingLoadStateAdapter<T : Any, VH : RecyclerView.ViewHolder>(
   private val adapter: PagingDataAdapter<T,VH>

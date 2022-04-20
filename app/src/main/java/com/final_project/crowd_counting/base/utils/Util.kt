@@ -5,7 +5,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Typeface
-import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
@@ -14,11 +13,9 @@ import android.text.SpannableStringBuilder
 import android.text.TextUtils
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
-import android.util.Log
 import android.util.Patterns
 import android.util.TypedValue
 import android.view.inputmethod.InputMethodManager
-import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
@@ -34,11 +31,9 @@ import androidx.navigation.NavOptions
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
-import com.final_project.crowd_counting.base.R
+import com.final_project.crowd_counting.R
 import com.final_project.crowd_counting.base.constant.Constant
 import com.final_project.crowd_counting.base.model.DateHolder
-import com.final_project.crowd_counting.base.view.rv.adapter.CountryListAdapter
-import com.google.android.material.textfield.TextInputLayout
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -311,61 +306,10 @@ object Util {
     ellipsize = mode
   }
 
-  fun AutoCompleteTextView.setCountryListAdapter(){
-    setAdapter(CountryListAdapter(context, getCountryAndFlagList(context)))
-  }
-
-  fun TextInputLayout.setOnSelectedCounty(country: String, drawable: Drawable?){
-    (editText as? AutoCompleteTextView)?.setText(country, false)
-    drawable?.let {
-      startIconDrawable = it
-    } ?: run {
-      startIconDrawable = getCountryAndFlagList(context).firstOrNull { it.first == country }?.second
-    }
-    isStartIconVisible = true
-  }
-
-  fun getCountryFlagDrawable(context: Context, country: String): Drawable?{
-    val countryIndex = context.resources.getStringArray(R.array.country_names).indexOfFirst {
-      it.equals(country)
-    }
-    val flags = context.resources.obtainTypedArray(R.array.country_flags)
-    return flags.getDrawable(countryIndex)
-  }
-
-  fun TextView.setCountryFlag(context: Context, country: String, drawablePosition: Int = 0){
-    text = makeBold(country, 0, country.length)
-    val countryIndex = context.resources.getStringArray(R.array.country_names).indexOfFirst {
-      it.equals(country)
-    }
-    val flags = context.resources.obtainTypedArray(R.array.country_flags)
-    when(drawablePosition){
-      0 -> setCompoundDrawablesWithIntrinsicBounds(flags.getDrawable(countryIndex), null,null,null)
-      1 -> setCompoundDrawablesWithIntrinsicBounds(null, flags.getDrawable(countryIndex),null,null)
-      2 -> setCompoundDrawablesWithIntrinsicBounds(null, null, flags.getDrawable(countryIndex),null)
-      else -> setCompoundDrawablesWithIntrinsicBounds(null, null,null,flags.getDrawable(countryIndex))
-    }
-    flags.recycle()
-  }
-
   fun TextView.setDrawableTint(@ColorRes res: Int){
     if (compoundDrawables[0] == null) return
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
       compoundDrawables[0].setTint(ContextCompat.getColor(context, res))
-    }
-  }
-
-  fun getCountryAndFlagList(context: Context): List<Pair<String, Drawable>>{
-    return context.resources.getStringArray(R.array.country_names) zip context.resources.obtainTypedArray(R.array.country_flags).run {
-      val flags = mutableListOf<Drawable>()
-      for (i in 0 until this.length()){
-        getDrawable(i)?.let {
-          flags.add(it)
-        }
-      }
-      Log.d("LENGTH DROP", flags.size.toString())
-      recycle()
-      flags
     }
   }
 
@@ -431,14 +375,14 @@ object Util {
         else
           transform(CenterCrop(), GranularRoundedCorners(0.0F, 0.0F, 0.0F, 0.0F))
       }
-      .placeholder(R.drawable.ic_no_image)
+      //.placeholder(R.drawable.ic_no_image)
       .into(this)
   }
 
   fun ImageView.loadCircularImage(url: String){
     Glide.with(context)
       .load(url)
-      .placeholder(R.drawable.ic_user_circle)
+      //.placeholder(R.drawable.ic_user_circle)
       .circleCrop()
       .into(this)
   }

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.appbar.AppBarLayout android:id="@+id/app_bar"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        app:title="title"
+        app:navigationIcon="@drawable/ic_back_arrow"
+        app:contentInsetStartWithNavigation="@android:dimen/app_icon_size"
+        android:theme="@style/AppTheme.PopupOverlay">
+
+        <ImageView
+            android:id="@+id/iv_title_image"
+            android:layout_width="@dimen/custome_logo_size"
+            android:layout_height="@dimen/custome_logo_size"
+            android:layout_marginHorizontal="@dimen/margin_4dp"
+            tools:src="@drawable/ic_clock"/>
+
+        <TextView
+            android:id="@+id/tv_custome_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="?themeTextSizeSubtitle"
+            tools:text="Muhammad Mujir"/>
+
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:padding="@dimen/padding_4dp"
+            android:lines="1"
+            android:inputType="text"
+            android:imeOptions="actionSearch"
+            android:layout_marginEnd="@dimen/margin_10dp"
+            android:layout_marginStart="@dimen/margin_8dp"
+            android:background="@drawable/bg_box_contaied_white"
+            android:hint="@string/nav_label_cart"/>
+
+    </androidx.appcompat.widget.Toolbar>
+
+</com.google.android.material.appbar.AppBarLayout>

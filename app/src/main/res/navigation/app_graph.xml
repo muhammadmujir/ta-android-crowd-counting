@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_graph"
+    app:startDestination="@+id/option_home">
+
+    <navigation
+        android:id="@+id/option_home"
+        app:startDestination="@id/option_homepage">
+        <fragment
+            android:id="@+id/option_homepage"
+            android:name="com.final_project.crowd_counting.home.HomeFragment"
+            tools:layout="@layout/fragment_home">
+            <action
+                android:id="@+id/to_camera_detail"
+                app:destination="@id/sub_camera_detail"/>
+        </fragment>
+        <fragment
+            android:id="@+id/sub_camera_detail"
+            android:name="com.final_project.crowd_counting.home.CameraDetailFragment" />
+    </navigation>
+
+</navigation>

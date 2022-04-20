@@ -1,3 +1,30 @@
 <resources>
+    <integer name="register_span_start">18</integer>
+    <integer name="register_span_end">24</integer>
+    <integer name="login_span_start">18</integer>
+    <integer name="login_span_end">23</integer>
     <string name="app_name">CrowdCounting</string>
+    <string name="full_name">Nama Lengkap</string>
+    <string name="email_address">Alamat Email</string>
+    <string name="password">Password</string>
+    <string name="enter">Masuk</string>
+    <string name="register">Daftar</string>
+    <string name="dont_have_account">Belum punya akun? Daftar</string>
+    <string name="already_have_account">Sudah punya akun? Masuk</string>
+
+    <string name="message_success">Berhasil %s</string>
+    <string name="message_create_success">Berhasil membuat %s</string>
+    <string name="message_update_success">Berhasil update %s</string>
+    <string name="message_delete_success">Berhasil hapus %s</string>
+    <string name="exit">Keluar</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="delete_confirmation">Hapus \"%s\" ?</string>
+    <string name="empty_not_allowed_message">%s tidak boleh kosong</string>
+    <string name="wrong_email_format">Format email salah</string>
+
+    <string name="nav_label_home">Beranda</string>
+    <string name="nav_label_statistic">Statistik</string>
+    <string name="nav_label_profile">Profil</string>
+    <string name="nav_label_cart">Keranjang</string>
 </resources>

@@ -2,7 +2,6 @@ package com.final_project.crowd_counting.base.injection
 
 import android.content.Context
 import com.final_project.crowd_counting.base.constant.Constant
-import com.final_project.crowd_counting.base.source.db.AppDB
 import com.final_project.crowd_counting.base.source.network.AuthInterceptor
 import com.final_project.crowd_counting.base.source.network.NetworkConnectionInterceptor
 import dagger.Module
@@ -15,7 +14,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Qualifier
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -61,9 +59,9 @@ class AppModule {
       .build()
   }
 
-  @Singleton
-  @Provides
-  fun provideDatabase(@ApplicationContext appContext: Context) = AppDB.getDatabase(appContext)
+//  @Singleton
+//  @Provides
+//  fun provideDatabase(@ApplicationContext appContext: Context) = AppDB.getDatabase(appContext)
 }
 
 @Qualifier

@@ -1,5 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/CrowdCounting/app/src/main/res/drawable/bg_box_contaied_white.xml" value="0.10052083333333334" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/CrowdCounting/app/src/main/res/drawable/bg_box_contained_gray.xml" value="0.10052083333333334" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/CrowdCounting/app/src/main/res/drawable/bg_box_contained_yellow.xml" value="0.10052083333333334" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/CrowdCounting/app/src/main/res/drawable/bg_box_outlined_black.xml" value="0.10052083333333334" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/CrowdCounting/app/src/main/res/drawable/bg_box_outlined_gray.xml" value="0.10052083333333334" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/CrowdCounting/app/src/main/res/drawable/bg_box_outlined_yellow.xml" value="0.10052083333333334" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/CrowdCounting/app/src/main/res/drawable/btn_bg_contained_selector.xml" value="0.10052083333333334" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/CrowdCounting/app/src/main/res/drawable/btn_bg_outlined_black_selector.xml" value="0.10052083333333334" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/CrowdCounting/app/src/main/res/drawable/btn_bg_outlined_yellow_selector.xml" value="0.10052083333333334" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/CrowdCounting/app/src/main/res/drawable/ic_back_arrow.xml" value="0.19814814814814816" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/CrowdCounting/app/src/main/res/drawable/ic_home_contained.xml" value="0.19814814814814816" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/CrowdCounting/app/src/main/res/drawable/ic_home_outlined.xml" value="0.19814814814814816" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/CrowdCounting/app/src/main/res/drawable/ic_logo.xml" value="0.20833333333333334" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/CrowdCounting/app/src/main/res/drawable/ic_profile_contained.xml" value="0.19814814814814816" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/CrowdCounting/app/src/main/res/drawable/ic_profile_outlined.xml" value="0.19814814814814816" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/CrowdCounting/app/src/main/res/drawable/nav_icon_selector_home.xml" value="0.19814814814814816" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/CrowdCounting/app/src/main/res/drawable/nav_icon_selector_profile.xml" value="0.19814814814814816" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/CrowdCounting/app/src/main/res/layout/activity_authentication.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/CrowdCounting/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/CrowdCounting/app/src/main/res/layout/activity_splash.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/CrowdCounting/app/src/main/res/layout/fragment_camera_detail.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/CrowdCounting/app/src/main/res/layout/fragment_dialog_confirmation.xml" value="0.1" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/CrowdCounting/app/src/main/res/layout/fragment_home.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/CrowdCounting/app/src/main/res/layout/fragment_login.xml" value="0.19010416666666666" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/CrowdCounting/app/src/main/res/layout/fragment_progress_dialog.xml" value="0.1" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/CrowdCounting/app/src/main/res/layout/fragment_register.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/CrowdCounting/app/src/main/res/layout/item_network_state.xml" value="0.1" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/CrowdCounting/app/src/main/res/layout/toolbar.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/CrowdCounting/app/src/main/res/menu/bottom_nav_menu.xml" value="0.20416666666666666" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

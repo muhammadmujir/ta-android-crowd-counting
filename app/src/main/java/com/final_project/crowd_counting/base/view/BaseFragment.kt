@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.viewbinding.ViewBinding
-import com.final_project.crowd_counting.base.R
 import com.final_project.crowd_counting.base.communicator.ILoadingCommunicator
 import com.final_project.crowd_counting.base.view.ProgressDialogFragment.Companion.PROGRESS_LOADING
 

@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import com.final_project.crowd_counting.base.databinding.FragmentDialogConfirmationBinding
 import com.final_project.crowd_counting.base.utils.Util
+import com.final_project.crowd_counting.databinding.FragmentDialogConfirmationBinding
 
 class ConfirmationDialogFragment: BaseDialogFragmentOnlyUI<FragmentDialogConfirmationBinding>() {
 

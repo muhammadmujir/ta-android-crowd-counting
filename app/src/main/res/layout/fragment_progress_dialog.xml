@@ -1,31 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
-    tools:context=".MainActivity">
-
-    <include
-        android:id="@+id/layout_toolbar"
-        layout="@layout/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/nav_host_fragment"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_0dp"
-        android:name="androidx.navigation.dynamicfeatures.fragment.DynamicNavHostFragment"
-        app:defaultNavHost="true"
-        app:navGraph="@navigation/app_graph"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_toolbar"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNav"/>
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".base.view.ProgressDialogFragment">
 
     <View
         android:id="@+id/view_background"
@@ -37,8 +16,8 @@
         android:focusableInTouchMode="true"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layout_toolbar"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNav"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <ProgressBar
         android:id="@+id/progress_bar"
@@ -46,7 +25,6 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:focusable="true"
-        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -73,7 +51,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/exit"
-        style="@style/ButtonStyle.Large.OutlinedButtonYellow"
+        style="@style/ButtonStyle.Large.ContainedButtonYellow"
         android:layout_marginHorizontal="@dimen/margin_10dp"
         android:visibility="gone"
         app:layout_constraintHorizontal_chainStyle="packed"
@@ -86,7 +64,7 @@
         android:id="@+id/btn_retry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/ButtonStyle.Large.ContainedButtonYellow"
+        style="@style/ButtonStyle.Large.OutlinedButtonYellow"
         android:text="@string/retry"
         android:visibility="gone"
         app:layout_constraintStart_toEndOf="@+id/btn_exit"
@@ -100,18 +78,5 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         app:constraint_referenced_ids="btn_exit,btn_retry,tv_error_message"/>
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNav"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/bottom_nav_height"
-        app:backgroundTint="?colorPrimary"
-        app:labelVisibilityMode="unlabeled"
-        app:itemIconTint="@null"
-        app:itemIconSize="@dimen/bottom_nav_item_size"
-        app:elevation="@dimen/dimen_2dp"
-        app:menu="@menu/bottom_nav_menu"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

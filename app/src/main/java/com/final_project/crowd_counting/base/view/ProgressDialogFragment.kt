@@ -6,9 +6,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
-import com.final_project.crowd_counting.base.R
+import com.final_project.crowd_counting.R
 import com.final_project.crowd_counting.base.communicator.ILoadingCommunicator
-import com.final_project.crowd_counting.base.databinding.FragmentProgressDialogBinding
+import com.final_project.crowd_counting.databinding.FragmentProgressDialogBinding
 import java.util.*
 
 class ProgressDialogFragment : BaseDialogFragmentOnlyUI<FragmentProgressDialogBinding>(),

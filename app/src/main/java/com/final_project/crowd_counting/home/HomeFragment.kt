@@ -41,32 +41,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     viewBinding.tvTitle.text = message
   }
 
-  inner class EchoWebSocketListener : WebSocketListener() {
-    private val CLOSE_STATUS = 1000
-    override fun onOpen(webSocket: WebSocket, response: Response) {
-      webSocket.send("What's up ?")
-      webSocket.send("abcd".decodeHex())
-      webSocket.close(CLOSE_STATUS, "Socket Closed !!")
-    }
-
-    override fun onMessage(webSocket: WebSocket, message: String) {
-      printMessage("Receive Message: $message")
-    }
-
-    override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
-      printMessage("Receive Bytes : " + bytes.hex())
-    }
-
-    override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
-      webSocket.close(CLOSE_STATUS, null)
-      printMessage("Closing Socket : $code / $reason")
-    }
-
-    override fun onFailure(webSocket: WebSocket, throwable: Throwable, response: Response?) {
-      print("Error : " + throwable.message)
-    }
-  }
-
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     arguments?.let {

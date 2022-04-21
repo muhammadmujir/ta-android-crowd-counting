@@ -16,7 +16,7 @@ object ApiCallHelper{
         ResponseWrapper.error(data = parseError(response.errorBody()!!))
       }
     } catch (throwable: Throwable) {
-      ResponseWrapper.error(data = BaseApiResponse(errors = throwable.message ?: throwable.toString()))
+      ResponseWrapper.error(data = BaseApiResponse(errors = listOf(throwable.message ?: throwable.toString())))
     }
   }
 

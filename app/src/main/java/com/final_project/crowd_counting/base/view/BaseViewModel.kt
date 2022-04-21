@@ -63,7 +63,7 @@ abstract class BaseViewModel: ViewModel() {
         } else {
           Log.d("THROW", throwable.message.toString())
           decreaseMaxIteration()
-          ResponseWrapper.error(data = BaseApiResponse(errors = throwable.message ?: throwable.toString()))
+          ResponseWrapper.error(data = BaseApiResponse(errors = listOf(throwable.message ?: throwable.toString())))
         }
       }
     }

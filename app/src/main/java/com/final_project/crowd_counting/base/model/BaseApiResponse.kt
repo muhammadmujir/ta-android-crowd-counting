@@ -10,7 +10,7 @@ data class BaseApiResponse<T>(
   @SerializedName("data")
   val data: T? = null,
   @SerializedName("errors")
-  val errors: Any? = null,
+  val errors: List<String>? = null,
   @SerializedName("pagination")
   val pagination: Pagination? = null
 )

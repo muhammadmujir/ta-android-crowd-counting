@@ -80,7 +80,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
           }
         }
         ResponseWrapper.Status.ERROR -> {
-          Toast.makeText(requireContext(), it.body?.errors.toString(), Toast.LENGTH_SHORT).show()
+          Toast.makeText(requireContext(), it.body?.errors?.firstOrNull().toString(), Toast.LENGTH_SHORT).show()
         }
       }
     })

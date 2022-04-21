@@ -18,13 +18,11 @@ class Deserializer<T>: JsonDeserializer<BaseApiResponse<T>> {
     Log.d("Kesalahan", json.toString())
     val code = json.get("code").asInt
     val status = json.get("status").asString
-    val error = json.get("error")
-    val errors: Any? = when {
-      error.isJsonArray -> error.asJsonArray
-      error.isJsonObject -> error.asJsonObject
-      else -> error.asString
+    val errors = json.get("errors").asJsonArray.run {
+      val errs = mutableListOf<String>()
+      forEach { errs.add(it.asString) }
+      errs
     }
-
     return BaseApiResponse(code = code, status=status, errors = errors)
   }
 }

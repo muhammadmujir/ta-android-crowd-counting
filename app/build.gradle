@@ -97,26 +97,14 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_android_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_android_version"
 
-    //work manager
-    def work_version = "2.7.1"
-    implementation "androidx.work:work-runtime:$work_version"
-    implementation "androidx.work:work-runtime-ktx:$work_version"
-    implementation "androidx.work:work-gcm:$work_version"
-    implementation "androidx.work:work-multiprocess:$work_version"
-    androidTestApi "androidx.work:work-testing:$work_version"
-
     //Paging 3
     def paging_version = "3.1.0"
     implementation "androidx.paging:paging-runtime-ktx:$paging_version"
 
-    //Room
-    def roomVersion = "2.4.1"
-    annotationProcessor("androidx.room:room-compiler:$roomVersion")
-    kapt("androidx.room:room-compiler:$roomVersion")
-    implementation("androidx.room:room-runtime:$roomVersion")
-    implementation("androidx.room:room-ktx:$roomVersion")
-    implementation("androidx.room:room-paging:2.4.2")
-    testApi("androidx.room:room-testing:$roomVersion")
+    //Socket.io
+    implementation('io.socket:socket.io-client:2.0.0') {
+        exclude group: 'org.json', module: 'json'
+    }
 
     //https://developer.android.com/studio/build/multidex
     implementation 'androidx.multidex:multidex:2.0.1'

@@ -21,11 +21,12 @@
         android:layout_height="@dimen/dimen_300dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_title"/>
-
+    
     <Button
         android:id="@+id/btn_send"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="@style/ButtonStyle.Small.OutlinedButtonYellow"
         android:text="SEND"
         android:layout_margin="@dimen/margin_10dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,9 +36,43 @@
         android:id="@+id/btn_join_room"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="@style/ButtonStyle.Small.OutlinedButtonYellow"
         android:text="JOIN ROOM"
         android:layout_margin="@dimen/margin_10dp"
         app:layout_constraintStart_toEndOf="@id/btn_send"
         app:layout_constraintTop_toBottomOf="@id/vv_camera"/>
+
+    <EditText
+        android:id="@+id/et_text"
+        android:layout_width="@dimen/dimen_0dp"
+        android:layout_height="wrap_content"
+        android:hint="RTSP Address"
+        android:layout_marginTop="@dimen/margin_10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_to_camera_detail"
+        app:layout_constraintTop_toBottomOf="@id/btn_send"/>
+
+    <Button
+        android:id="@+id/btn_to_camera_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/ButtonStyle.Small.OutlinedButtonYellow"
+        android:text="CAMERA DETAIL"
+        android:layout_marginTop="@dimen/margin_10dp"
+        android:layout_marginStart="@dimen/margin_10dp"
+        app:layout_constraintStart_toEndOf="@id/btn_join_room"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_send"/>
+
+    <Button
+        android:id="@+id/btn_play_video"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/ButtonStyle.Small.OutlinedButtonYellow"
+        android:text="PLAY VIDEO"
+        android:layout_marginTop="@dimen/margin_10dp"
+        android:layout_marginStart="@dimen/margin_10dp"
+        app:layout_constraintEnd_toEndOf="@id/btn_to_camera_detail"
+        app:layout_constraintTop_toBottomOf="@id/et_text"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

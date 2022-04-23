@@ -1,14 +1,15 @@
 package com.final_project.crowd_counting.home
 
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.MediaController
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.final_project.crowd_counting.R
 import com.final_project.crowd_counting.base.model.CameraStreamRequest
 import com.final_project.crowd_counting.base.model.CameraStreamResponse
@@ -17,13 +18,12 @@ import com.final_project.crowd_counting.databinding.FragmentHomeBinding
 import com.final_project.crowd_counting.home.viewmodel.HomeViewModel
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
-import io.socket.client.IO
 import io.socket.client.Manager
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
-import okhttp3.*
-import okio.ByteString
-import okio.ByteString.Companion.decodeHex
+import org.videolan.libvlc.LibVLC
+import org.videolan.libvlc.Media
+import org.videolan.libvlc.MediaPlayer
 import java.net.URI
 
 private const val ARG_PARAM1 = "param1"
@@ -51,13 +51,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-//    initVideoView()
     initWebSocket()
+    viewBinding.btnToCameraDetail.setOnClickListener {
+      findNavController().navigate(R.id.to_camera_detail, Bundle().apply {
+        putString(ARG_RTSP_ADDRESS, viewBinding.etText.text.toString())
+      })
+    }
+    viewBinding.btnPlayVideo.setOnClickListener { initVideoView() }
   }
 
-  private fun initVideoView(){
+  private fun initVideoView() {
     val mediaController = MediaController(requireContext()).apply { setAnchorView(viewBinding.vvCamera) }
-    with(viewBinding.vvCamera){
+    with(viewBinding.vvCamera) {
       setOnCompletionListener {
         Toast.makeText(requireContext(), "Video Complete", Toast.LENGTH_SHORT).show()
       }
@@ -66,20 +71,27 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         false
       }
       setMediaController(mediaController)
-      setVideoPath("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")
+      setVideoURI(Uri.parse(viewBinding.etText.text.toString()))
+//      setVideoPath()
       requestFocus()
       start()
     }
   }
+
 
   private fun initWebSocket(){
     viewBinding.btnSend.setOnClickListener { start() }
     viewBinding.btnJoinRoom.setOnClickListener { joinRoom() }
   }
 
+  private fun stopWebSocket(){
+    mSocket.emit("leave", gson.toJson(CameraStreamRequest(10)))
+    mSocket.disconnect()
+  }
+
   private fun start(){
     try {
-      //This address is the way you can connect to localhost with AVD(Android Virtual Device)
+//      This address is the way you can connect to localhost with AVD(Android Virtual Device)
 //      mSocket = IO.socket("http://192.168.43.194:5000/")
 //      Log.d("success", mSocket.id().toString())
       val manager = Manager(URI("http://192.168.43.194:5000/"))
@@ -114,15 +126,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 //    viewBinding.tvTitle.text = it[1].toString()
   }
 
-  companion object {
-    @JvmStatic fun newInstance(param1: String, param2: String) = HomeFragment().apply {
-      arguments = Bundle().apply {
-        putString(ARG_PARAM1, param1)
-        putString(ARG_PARAM2, param2)
-      }
-    }
-  }
-
   override fun getVM(): HomeViewModel = viewModel
 
   override fun shouldHandleLoading(): Boolean = false
@@ -139,8 +142,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     super.onDestroy()
     //Before disconnecting, send "unsubscribe" event to server so that
     //server can send "userLeftChatRoom" event to other users in chatroom
-    mSocket.emit("leave", gson.toJson(CameraStreamRequest(10)))
-    mSocket.disconnect()
+    stopWebSocket()
   }
 
+  companion object {
+    @JvmStatic fun newInstance(param1: String, param2: String) = HomeFragment().apply {
+      arguments = Bundle().apply {
+        putString(ARG_PARAM1, param1)
+        putString(ARG_PARAM2, param2)
+      }
+    }
+  }
 }

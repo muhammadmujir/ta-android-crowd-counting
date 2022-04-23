@@ -58,4 +58,16 @@
     <declare-styleable name="MyButtonStyle">
         <attr name="myButtonStyleSmallOutlinedBlack" format="reference"/>
     </declare-styleable>
+    <declare-styleable name="CustomVLCVideoLayout">
+        <attr name="custom_width" format="dimension">
+            <enum name="fill_parent" value="-1" />
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <attr name="custom_height" format="dimension">
+            <enum name="fill_parent" value="-1" />
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
+        </attr>
+    </declare-styleable>
 </resources>

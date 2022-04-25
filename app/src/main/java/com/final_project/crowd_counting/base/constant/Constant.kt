@@ -4,9 +4,8 @@ object Constant {
   const val SERVER_URL = "http://192.168.43.194:5000"
   const val BASE_URL = "$SERVER_URL/api/v1.0/"
   const val IMAGE_URL = "$SERVER_URL/static/images"
-  const val PRODUCT_IMAGE = "$IMAGE_URL/products/"
-  const val PRODUCT_REQUEST_IMAGE = "$IMAGE_URL/product-requests/"
-  const val USER_IMAGE = "$IMAGE_URL/profile-pictures/"
+  const val CAMERA_IMAGE = "$IMAGE_URL/cameras/"
+  const val USER_IMAGE = "$IMAGE_URL/users/"
 
   const val PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123
   const val PICK_PHOTO = 10

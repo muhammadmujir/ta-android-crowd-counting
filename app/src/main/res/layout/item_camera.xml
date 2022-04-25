@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".home.CameraDetailFragment">
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingBottom="@dimen/padding_10dp"
+    android:background="@drawable/bg_box_outlined_black"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.final_project.crowd_counting.base.view.custom_view.CustomVLCVideoLayout
-        android:id="@+id/vv_camera"
+    <ImageView
+        android:id="@+id/iv_camera"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_300dp"
-        app:custom_width="match_parent"
-        app:custom_height="@dimen/dimen_300dp"
+        android:layout_height="@dimen/dimen_200dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
@@ -20,12 +19,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/BaseTextViewStyle.SubTitle"
-        android:layout_margin="@dimen/margin_10dp"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constrainedWidth="true"
+        android:layout_marginTop="@dimen/margin_10dp"
+        android:layout_marginHorizontal="@dimen/padding_10dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/tv_crowd_count"
-        app:layout_constraintTop_toBottomOf="@id/vv_camera"/>
+        app:layout_constraintTop_toBottomOf="@id/iv_camera"
+        tools:text="Lantai 10"/>
 
     <TextView
         android:id="@+id/tv_area"
@@ -53,17 +51,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_max_crowd_count"
         tools:text="Deskripsi Kamera"/>
-
-    <TextView
-        android:id="@+id/tv_crowd_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/BaseTextViewStyle.Title"
-        android:background="@drawable/bg_box_contained_yellow"
-        android:padding="@dimen/padding_10dp"
-        android:layout_margin="@dimen/margin_10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/vv_camera"
-        tools:text="Count: 100"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

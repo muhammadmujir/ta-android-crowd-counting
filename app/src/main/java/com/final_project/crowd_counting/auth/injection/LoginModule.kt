@@ -5,11 +5,12 @@ import com.final_project.crowd_counting.base.injection.DefaultTimingOkHttpClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ViewModelComponent::class)
 class LoginModule {
   @Provides
   fun provideLoginService(@DefaultTimingOkHttpClient retrofit: Retrofit): IAuthApiService {

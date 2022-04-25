@@ -1,6 +1,8 @@
 package com.final_project.crowd_counting.base.source.network
 
+import android.util.Log
 import com.final_project.crowd_counting.base.model.BaseApiResponse
+import com.final_project.crowd_counting.base.utils.Util.orDefaultBool
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.ResponseBody
@@ -13,7 +15,20 @@ object ApiCallHelper{
       if (response.isSuccessful) {
         ResponseWrapper.success(response.body()!!)
       } else {
-        ResponseWrapper.error(data = parseError(response.errorBody()!!))
+        val errorBody: BaseApiResponse<T> = parseError(response.errorBody()!!)
+        if (errorBody.code == 401){
+          if (errorBody.errors?.getOrNull(0)?.contains("token", true).orDefaultBool(false))
+            return ResponseWrapper.error(data = errorBody.run {
+              BaseApiResponse(
+                code,
+                status,
+                data,
+                listOf("Terdapat masalah autentikasi, harap logout dan login kembali"),
+                pagination
+              )
+            })
+        }
+        ResponseWrapper.error(data = errorBody)
       }
     } catch (throwable: Throwable) {
       ResponseWrapper.error(data = BaseApiResponse(errors = listOf(throwable.message ?: throwable.toString())))

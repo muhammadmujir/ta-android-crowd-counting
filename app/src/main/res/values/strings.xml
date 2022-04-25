@@ -23,6 +23,15 @@
     <string name="empty_not_allowed_message">%s tidak boleh kosong</string>
     <string name="wrong_email_format">Format email salah</string>
 
+    <string name="location_is">Lokasi: %s</string>
+    <string name="area_width_is">Luas Area: %s</string>
+    <string name="max_crowd_is">Maksimal Kerumunan: %s</string>
+    <string name="crowd_is">Kerumunan: %s</string>
+    <string name="description_is">Deskripsi:\n%s</string>
+    <string name="there_is_problem_with_auth_please_relogin">Terdapat kesalahan authentikasi, harap logout dan login kembali</string>
+    <string name="private_camera">Kamera Private</string>
+    <string name="public_camera">Kamera Publik</string>
+
     <string name="nav_label_home">Beranda</string>
     <string name="nav_label_statistic">Statistik</string>
     <string name="nav_label_profile">Profil</string>

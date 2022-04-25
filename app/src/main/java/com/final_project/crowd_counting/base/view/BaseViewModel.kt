@@ -127,7 +127,6 @@ abstract class BaseViewModel: ViewModel() {
   ) {
     viewModelScope.launch(Dispatchers.IO) {
       try {
-        Log.d("GET TRAVELLER", "YES")
         val result = execute()
         onSuccess(result)
       } catch (ex: Exception) {

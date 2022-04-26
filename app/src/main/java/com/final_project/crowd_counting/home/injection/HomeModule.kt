@@ -12,7 +12,7 @@ import retrofit2.Retrofit
 @InstallIn(ViewModelComponent::class)
 class HomeModule {
   @Provides
-  fun provideLoginService(@DefaultTimingOkHttpClient retrofit: Retrofit): IHomeApiService {
+  fun provideHomeService(@DefaultTimingOkHttpClient retrofit: Retrofit): IHomeApiService {
     return retrofit.create(IHomeApiService::class.java)
   }
 }

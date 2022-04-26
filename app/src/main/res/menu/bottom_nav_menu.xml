@@ -10,7 +10,7 @@
     <item
         android:id="@+id/option_statistic"
         android:enabled="true"
-        android:icon="@drawable/nav_icon_selector_home"
+        android:icon="@drawable/nav_icon_selector_statistic"
         android:title="@string/nav_label_statistic"
         app:showAsAction="ifRoom"/>
     <item

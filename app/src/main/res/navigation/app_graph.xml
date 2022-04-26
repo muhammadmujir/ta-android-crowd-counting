@@ -21,4 +21,12 @@
             android:name="com.final_project.crowd_counting.home.CameraDetailFragment" />
     </navigation>
 
+    <navigation
+        android:id="@+id/option_statistic"
+        app:startDestination="@id/frag_statistic">
+        <fragment
+            android:id="@+id/frag_statistic"
+            android:name="com.final_project.crowd_counting.statistic.StatisticFragment" />
+    </navigation>
+
 </navigation>

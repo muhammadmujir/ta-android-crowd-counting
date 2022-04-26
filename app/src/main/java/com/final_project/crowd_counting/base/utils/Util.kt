@@ -177,15 +177,17 @@ object Util {
     )
   }
 
+//  https://developer.android.com/reference/java/text/SimpleDateFormat
+
   fun dateToMillis(
     date: String,
-    pattern: String = "yyyy-MM-dd'T'HH:mm:ss'Z'",
-    timezone: TimeZone = TimeZone.getTimeZone("GMT")
+    pattern: String = "E, dd MMMM yyyy HH:mm:ss z",
+    timezone: TimeZone = TimeZone.getDefault()
   ): Long {
     try {
       SimpleDateFormat(pattern, Locale.getDefault()).run {
         timeZone = timezone
-        return parse(sanitizeDate(date))!!.time
+        return parse(date)!!.time
       }
     } catch (ex: Exception){
       ex.printStackTrace()
@@ -195,7 +197,7 @@ object Util {
 
   fun millisToDate(
     timeStamp: Long,
-    pattern: String = "dd MMM yyyy",
+    pattern: String = "yyyy-MM-dd HH:mm:ssZ",
     timezone: TimeZone = TimeZone.getDefault()
   ): String{
     return try {
@@ -209,12 +211,12 @@ object Util {
     }
   }
 
-  fun gmtToLocal(date: String, from: String = "yyyy-MM-dd'T'HH:mm:ss'Z'", to: String = "dd MMM yyyy"): String{
+  fun gmtToLocal(date: String, from: String = "E, dd MMMM yyyy HH:mm:ss z", to: String = "yyyy-MM-dd HH:mm:ssZ"): String{
     val timeMillis = dateToMillis(date,from)
     return millisToDate(timeMillis, to)
   }
 
-  fun localToGmt(date: Long, pattern: String = "yyyy-MM-dd'T'HH:mm:ss'Z'"): String{
+  fun localToGmt(date: Long, pattern: String = "yyyy-MM-dd HH:mm:ssZ"): String{
     return millisToDate(date, pattern, TimeZone.getTimeZone("GMT"))
   }
 
@@ -375,7 +377,7 @@ object Util {
         else
           transform(CenterCrop(), GranularRoundedCorners(0.0F, 0.0F, 0.0F, 0.0F))
       }
-      //.placeholder(R.drawable.ic_no_image)
+      .placeholder(R.drawable.ic_logo)
       .into(this)
   }
 

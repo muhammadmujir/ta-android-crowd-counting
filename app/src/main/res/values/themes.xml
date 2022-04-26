@@ -228,10 +228,9 @@
     </style>
     <!--  Material Theme  -->
     <style name="Material.TextInputLayout.OutlinedBox.ExposedDropdownMenu" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
-        <item name="android:layout_marginStart">@dimen/margin_6dp</item>
-        <item name="android:layout_marginEnd">@dimen/margin_6dp</item>
-        <item name="android:layout_marginTop">@dimen/margin_6dp</item>
-        <item name="android:layout_marginBottom">@dimen/margin_6dp</item>
+        <item name="android:layout_marginStart">@dimen/margin_10dp</item>
+        <item name="android:layout_marginEnd">@dimen/margin_10dp</item>
+        <item name="android:layout_marginTop">@dimen/margin_10dp</item>
         <item name="boxCornerRadiusTopStart">@dimen/dimen_15dp</item>
         <item name="boxCornerRadiusTopEnd">@dimen/dimen_15dp</item>
         <item name="boxCornerRadiusBottomStart">@dimen/dimen_15dp</item>

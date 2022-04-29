@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Typeface
+import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
@@ -29,8 +30,12 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.final_project.crowd_counting.R
 import com.final_project.crowd_counting.base.constant.Constant
 import com.final_project.crowd_counting.base.model.DateHolder
@@ -368,9 +373,38 @@ object Util {
     }
   }
 
-  fun ImageView.loadImage(url: String, radius: List<Float> = listOf(10.0F,10.0F,0.0F,0.0F)){
+  fun ImageView.loadImage(
+    url: String, radius: List<Float> = listOf(10.0F,10.0F,0.0F,0.0F),
+    errorListener: ((e: GlideException?, target: Target<Drawable>?) -> Unit)? = null,
+    successListner: (() -> Unit)? = null
+  ){
     Glide.with(context)
       .load(url)
+      .apply {
+        errorListener?.let {
+          listener(object : RequestListener<Drawable>{
+            override fun onLoadFailed(
+              e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean
+            ): Boolean {
+              errorListener(e, target)
+              return true
+            }
+
+            override fun onResourceReady(
+              resource: Drawable?,
+              model: Any?,
+              target: Target<Drawable>?,
+              dataSource: DataSource?,
+              isFirstResource: Boolean
+            ): Boolean {
+              if (successListner != null) successListner()
+              return false
+            }
+          })
+        } ?: run {
+          listener(null)
+        }
+      }
       .run {
         if (radius.size == 4)
           transform(CenterCrop(), GranularRoundedCorners(radius[0], radius[1], radius[2], radius[3]))

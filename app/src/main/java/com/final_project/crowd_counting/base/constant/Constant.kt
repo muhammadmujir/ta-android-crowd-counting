@@ -3,7 +3,7 @@ package com.final_project.crowd_counting.base.constant
 object Constant {
   const val SERVER_URL = "http://192.168.43.194:5000"
   const val BASE_URL = "$SERVER_URL/api/v1.0/"
-  const val IMAGE_URL = "$SERVER_URL/static/images"
+  const val IMAGE_URL = "$BASE_URL/static/images"
   const val CAMERA_IMAGE = "$IMAGE_URL/cameras/"
   const val USER_IMAGE = "$IMAGE_URL/users/"
 

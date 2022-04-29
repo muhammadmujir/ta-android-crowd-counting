@@ -7,9 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.text.HtmlCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.final_project.crowd_counting.R
+import com.final_project.crowd_counting.base.communicator.ActivityObserver
+import com.final_project.crowd_counting.base.communicator.IToolbarCommunicator
 import com.final_project.crowd_counting.base.constant.Constant.SERVER_URL
 import com.final_project.crowd_counting.base.model.Camera
 import com.final_project.crowd_counting.base.model.CameraStreamRequest
@@ -54,6 +58,14 @@ class CameraDetailFragment : BaseFragment<FragmentCameraDetailBinding, HomeViewM
   override fun getFragmentBinding(
     inflater: LayoutInflater, container: ViewGroup?
   ): FragmentCameraDetailBinding {
+    requireActivity().lifecycle.addObserver(ActivityObserver{
+      (requireActivity() as IToolbarCommunicator).run {
+        setOnNavigateBack(this@CameraDetailFragment, {
+          findNavController().popBackStack()
+        }, true)
+        setTitleAndDescription(getString(R.string.camera_detail), null)
+      }
+    })
     return FragmentCameraDetailBinding.inflate(inflater, container, false)
   }
 
@@ -62,7 +74,8 @@ class CameraDetailFragment : BaseFragment<FragmentCameraDetailBinding, HomeViewM
   private fun initCameraData(){
     with(viewBinding){
       tvLocation.text = getString(R.string.location_is, camera?.location)
-      tvArea.text = getString(R.string.area_width_is, camera?.area.toString())
+      val textArea = getString(R.string.area_width_is, camera?.area)
+      tvArea.text = HtmlCompat.fromHtml(textArea, HtmlCompat.FROM_HTML_MODE_LEGACY)
       tvMaxCrowdCount.text = getString(R.string.max_crowd_is, camera?.maxCrowdCount.toString())
       tvDesc.text = getString(R.string.description_is, camera?.description)
       tvCrowdCount.text = getString(R.string.crowd_is, "-")

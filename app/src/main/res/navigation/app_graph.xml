@@ -29,4 +29,31 @@
             android:name="com.final_project.crowd_counting.statistic.StatisticFragment" />
     </navigation>
 
+    <navigation
+        android:id="@+id/option_profile"
+        app:startDestination="@id/frag_profile">
+        <fragment
+            android:id="@+id/frag_profile"
+            android:name="com.final_project.crowd_counting.profile.ProfileFragment">
+            <action
+                android:id="@+id/to_camera_list"
+                app:destination="@id/frag_camera_list"/>
+        </fragment>
+        <fragment
+            android:id="@+id/frag_camera_list"
+            android:name="com.final_project.crowd_counting.camera.CameraListFragment">
+            <action
+                android:id="@+id/to_camera_form"
+                app:destination="@id/frag_camera_form"/>
+        </fragment>
+        <fragment
+            android:id="@+id/frag_camera_form"
+            android:name="com.final_project.crowd_counting.camera.CameraFormFragment">
+            <action
+                android:id="@+id/to_camera_list"
+                app:destination="@id/frag_camera_list"
+                app:popUpTo="@id/frag_camera_list"
+                app:popUpToInclusive="true"/>
+        </fragment>
+    </navigation>
 </navigation>

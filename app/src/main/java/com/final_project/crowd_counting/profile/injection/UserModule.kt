@@ -1,7 +1,7 @@
-package com.final_project.crowd_counting.home.injection
+package com.final_project.crowd_counting.profile.injection
 
 import com.final_project.crowd_counting.base.injection.DefaultTimingOkHttpClient
-import com.final_project.crowd_counting.home.source.IHomeApiService
+import com.final_project.crowd_counting.profile.source.IUserApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -10,9 +10,9 @@ import retrofit2.Retrofit
 
 @Module
 @InstallIn(ViewModelComponent::class)
-class HomeModule {
+class UserModule {
   @Provides
-  fun provideHomeService(@DefaultTimingOkHttpClient retrofit: Retrofit): IHomeApiService {
-    return retrofit.create(IHomeApiService::class.java)
+  fun provideUserService(@DefaultTimingOkHttpClient retrofit: Retrofit): IUserApiService {
+    return retrofit.create(IUserApiService::class.java)
   }
 }

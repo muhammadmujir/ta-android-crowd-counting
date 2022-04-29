@@ -12,8 +12,8 @@ import retrofit2.http.Path
 
 interface IStatisticApiService {
 
-  @GET("cameras/_publicCamera")
-  suspend fun getPublicCameraList(): Response<BaseApiResponse<List<Camera>>>
+  @GET("cameras/_all")
+  suspend fun getAllCameraList(): Response<BaseApiResponse<List<Camera>>>
 
   @POST("cameras/{cameraId}/_statistics")
   suspend fun getStatistic(

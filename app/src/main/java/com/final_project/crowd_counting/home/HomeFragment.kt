@@ -10,6 +10,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.DiffUtil
 import com.final_project.crowd_counting.R
+import com.final_project.crowd_counting.base.communicator.ActivityObserver
+import com.final_project.crowd_counting.base.communicator.IToolbarCommunicator
 import com.final_project.crowd_counting.base.model.Camera
 import com.final_project.crowd_counting.base.view.BaseFragment
 import com.final_project.crowd_counting.base.view.rv.SpacingItemDecoration
@@ -31,7 +33,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
       return oldItem == newItem
     }
 
-  }, ::onItemClicked)
+  }, true, ::onItemClicked)
   private val publicCameraAdapter: CameraListAdapter = CameraListAdapter(object: DiffUtil.ItemCallback<Camera>(){
     override fun areItemsTheSame(oldItem: Camera, newItem: Camera): Boolean {
       return oldItem.id == newItem.id
@@ -41,7 +43,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
       return oldItem == newItem
     }
 
-  }, ::onItemClicked)
+  }, false, ::onItemClicked)
+
+  override fun getVM(): HomeViewModel = viewModel
+
+  override fun shouldHandleLoading(): Boolean = false
+
+  override fun getFragmentBinding(
+    inflater: LayoutInflater, container: ViewGroup?
+  ): FragmentHomeBinding {
+    requireActivity().lifecycle.addObserver(ActivityObserver{
+      (requireActivity() as IToolbarCommunicator).setToolbarVisibility(false)
+    })
+    return FragmentHomeBinding.inflate(inflater, container, false)
+  }
+
+  override fun shouldResetToolbarView(): Boolean = true
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -94,17 +111,5 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
       putParcelable(ARG_CAMERA, data)
     })
   }
-
-  override fun getVM(): HomeViewModel = viewModel
-
-  override fun shouldHandleLoading(): Boolean = false
-
-  override fun getFragmentBinding(
-    inflater: LayoutInflater, container: ViewGroup?
-  ): FragmentHomeBinding {
-    return FragmentHomeBinding.inflate(inflater, container, false)
-  }
-
-  override fun shouldResetToolbarView(): Boolean = true
 
 }

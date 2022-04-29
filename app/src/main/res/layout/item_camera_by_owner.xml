@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/bg_box_outlined_yellow">
+
+    <ImageView
+        android:id="@+id/iv_camera"
+        android:layout_width="@dimen/medium_image_size_4"
+        android:layout_height="@dimen/medium_image_size_4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageButton
+        android:id="@+id/ib_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_cross_black_outlined"
+        android:background="@null"
+        android:layout_margin="@dimen/margin_10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_camera_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/BaseTextViewStyle.SubTitle"
+        android:layout_margin="@dimen/margin_10dp"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintStart_toEndOf="@id/iv_camera"
+        app:layout_constraintEnd_toStartOf="@id/ib_delete"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Camera 01"/>
+
+    <TextView
+        android:id="@+id/tv_camera_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_10dp"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintStart_toEndOf="@id/iv_camera"
+        app:layout_constraintEnd_toStartOf="@id/ib_delete"
+        app:layout_constraintTop_toBottomOf="@id/tv_camera_title"
+        tools:text="Gedung H Lantai 10"/>
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/sw_active"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/active"
+        android:layout_margin="@dimen/margin_10dp"
+        app:switchPadding="@dimen/padding_10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

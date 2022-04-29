@@ -11,5 +11,7 @@ data class Camera(
   val location: String? = null,
   val description: String? = null,
   val area: Float = 0.0F,
-  val maxCrowdCount: Int = 0
+  val maxCrowdCount: Int = 0,
+  val isActive: Boolean = false,
+  val isPublic: Boolean = true
 ): Parcelable

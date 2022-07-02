@@ -53,6 +53,11 @@
         <entry key="..\:/Users/Admin/AndroidStudioProjects/CrowdCounting/app/src/main/res/layout/toolbar.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/CrowdCounting/app/src/main/res/menu/bottom_nav_menu.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/CrowdCounting/app/src/main/res/xml/network_security_config.xml" value="0.1" />
+        <entry key="..\:/Users/Mujir/StudioProjects/ta-android-crowd-counting/app/src/main/res/drawable/bg_box_contained_red.xml" value="0.1945" />
+        <entry key="..\:/Users/Mujir/StudioProjects/ta-android-crowd-counting/app/src/main/res/drawable/bg_box_contained_yellow.xml" value="0.1945" />
+        <entry key="..\:/Users/Mujir/StudioProjects/ta-android-crowd-counting/app/src/main/res/drawable/ic_check_shield.xml" value="0.1945" />
+        <entry key="..\:/Users/Mujir/StudioProjects/ta-android-crowd-counting/app/src/main/res/drawable/ic_cross_octa_red.xml" value="0.1945" />
+        <entry key="..\:/Users/Mujir/StudioProjects/ta-android-crowd-counting/app/src/main/res/layout/fragment_camera_detail.xml" value="0.25" />
       </map>
     </option>
   </component>

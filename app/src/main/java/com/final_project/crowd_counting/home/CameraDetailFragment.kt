@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -18,6 +19,7 @@ import com.final_project.crowd_counting.base.constant.Constant.SERVER_URL
 import com.final_project.crowd_counting.base.model.Camera
 import com.final_project.crowd_counting.base.model.CameraStreamRequest
 import com.final_project.crowd_counting.base.model.CameraStreamResponse
+import com.final_project.crowd_counting.base.utils.Util.orDefaultInt
 import com.final_project.crowd_counting.base.view.BaseFragment
 import com.final_project.crowd_counting.databinding.FragmentCameraDetailBinding
 import com.final_project.crowd_counting.home.viewmodel.HomeViewModel
@@ -34,6 +36,7 @@ import org.videolan.libvlc.MediaPlayer
 import java.net.URI
 
 const val ARG_CAMERA = "argCamera"
+private const val KEY_OUT_OF_MAX = "outOfMax"
 
 @AndroidEntryPoint
 class CameraDetailFragment : BaseFragment<FragmentCameraDetailBinding, HomeViewModel>() {
@@ -43,6 +46,14 @@ class CameraDetailFragment : BaseFragment<FragmentCameraDetailBinding, HomeViewM
   private lateinit var mSocket: Socket
   private val gson = Gson()
   private val camera: Camera? by lazy { arguments?.getParcelable(ARG_CAMERA) }
+  private var isOutOfMaxCrowd = false
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    savedInstanceState?.let {
+      isOutOfMaxCrowd = it.getBoolean(KEY_OUT_OF_MAX)
+    }
+  }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -144,8 +155,32 @@ class CameraDetailFragment : BaseFragment<FragmentCameraDetailBinding, HomeViewM
   var onJoinRoom = Emitter.Listener {
     val response = gson.fromJson(it[0].toString(), CameraStreamResponse::class.java)
     lifecycleScope.launch(Dispatchers.Main) {
-      viewBinding.tvCrowdCount.text = getString(R.string.crowd_is, response.count.toString())
+      with(viewBinding){
+        if (isOutOfMaxCrowd != response.count > camera?.maxCrowdCount.orDefaultInt(100000)){
+          isOutOfMaxCrowd = response.count > camera?.maxCrowdCount.orDefaultInt(100000)
+          Log.d("Coba", "coba: "+isOutOfMaxCrowd)
+          if (isOutOfMaxCrowd){
+            tvCrowdCount.background = ContextCompat.getDrawable(root.context, R.drawable.bg_box_contained_red)
+            tvCrowdCount.setTextColor(ContextCompat.getColor(root.context, android.R.color.white))
+            tvCrowdStatus.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(root.context, R.drawable.ic_cross_octa_red), null, null)
+            tvCrowdStatus.text = getString(R.string.dangerous_crowd_status)
+            tvCrowdStatus.setTextColor(ContextCompat.getColor(root.context, R.color.colorRedDark_C42625))
+          } else {
+            tvCrowdCount.background = ContextCompat.getDrawable(root.context, R.drawable.bg_box_contained_yellow)
+            tvCrowdCount.setTextColor(ContextCompat.getColor(root.context, R.color.colorTextPrimary))
+            tvCrowdStatus.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(root.context, R.drawable.ic_check_shield), null, null)
+            tvCrowdStatus.text = getString(R.string.safe_crowd_status)
+            tvCrowdStatus.setTextColor(ContextCompat.getColor(root.context, R.color.colorGreenDark_3E8606))
+          }
+        }
+        tvCrowdCount.text = getString(R.string.crowd_is, response.count.toString())
+      }
     }
+  }
+
+  override fun onSaveInstanceState(outState: Bundle) {
+    super.onSaveInstanceState(outState)
+    outState.putBoolean(KEY_OUT_OF_MAX, isOutOfMaxCrowd)
   }
 
   override fun onStop() {

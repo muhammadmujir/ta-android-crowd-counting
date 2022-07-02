@@ -61,6 +61,8 @@
     <string name="location">Lokasi</string>
     <string name="area">Luas Area</string>
     <string name="max_crowd_count">Maksimal Kerumunan</string>
+    <string name="safe_crowd_status">Status Kerumunan Aman</string>
+    <string name="dangerous_crowd_status">Status Kerumunan Berbahaya</string>
 
     <string name="nav_label_home">Beranda</string>
     <string name="nav_label_statistic">Statistik</string>

@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.viewModels
@@ -25,18 +24,34 @@ import com.final_project.crowd_counting.databinding.FragmentCameraDetailBinding
 import com.final_project.crowd_counting.home.viewmodel.HomeViewModel
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import io.socket.client.IO
 import io.socket.client.Manager
+import io.socket.client.Manager.EVENT_ERROR
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.ConnectionPool
+import okhttp3.OkHttpClient
 import org.videolan.libvlc.LibVLC
 import org.videolan.libvlc.Media
 import org.videolan.libvlc.MediaPlayer
 import java.net.URI
+import java.net.URISyntaxException
+import java.security.KeyManagementException
+import java.security.NoSuchAlgorithmException
+import java.security.SecureRandom
+import java.security.cert.X509Certificate
+import java.util.concurrent.TimeUnit
+import javax.net.ssl.HostnameVerifier
+import javax.net.ssl.SSLContext
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
+
 
 const val ARG_CAMERA = "argCamera"
 private const val KEY_OUT_OF_MAX = "outOfMax"
+private const val EVENT_CROWD_RESPONSE = "my_response"
 
 @AndroidEntryPoint
 class CameraDetailFragment : BaseFragment<FragmentCameraDetailBinding, HomeViewModel>() {
@@ -59,7 +74,8 @@ class CameraDetailFragment : BaseFragment<FragmentCameraDetailBinding, HomeViewM
     super.onViewCreated(view, savedInstanceState)
     initCameraData()
     initVideoView()
-    initWebSocket()
+//    initWebSocket()
+    initialSocket("")
   }
 
   override fun getVM(): HomeViewModel = viewModel
@@ -117,6 +133,67 @@ class CameraDetailFragment : BaseFragment<FragmentCameraDetailBinding, HomeViewM
     libVLC.release()
   }
 
+  fun initialSocket(token: String) {
+    try {
+      val myHostnameVerifier = HostnameVerifier { hostname, session -> true }
+      val mySSLContext: SSLContext = SSLContext.getInstance("TLS")
+      val trustAllCerts: Array<TrustManager> = arrayOf<TrustManager>(object : X509TrustManager {
+
+        override fun checkClientTrusted(
+          chain: Array<X509Certificate?>?,
+          authType: String?
+        ) {
+        }
+
+        override fun checkServerTrusted(
+          chain: Array<X509Certificate?>?,
+          authType: String?
+        ) {
+        }
+
+        override fun getAcceptedIssuers(): Array<X509Certificate> {
+          return arrayOf()
+        }
+      })
+      mySSLContext.init(null, trustAllCerts, SecureRandom())
+      val clientBuilder: OkHttpClient.Builder = OkHttpClient.Builder()
+        .retryOnConnectionFailure(true)
+        .connectTimeout(5, TimeUnit.MINUTES) // connect timeout
+        .writeTimeout(5, TimeUnit.MINUTES) // write timeout
+        .readTimeout(5, TimeUnit.MINUTES) // read timeout
+        .connectionPool(ConnectionPool(0, 1, TimeUnit.NANOSECONDS))
+        .hostnameVerifier(myHostnameVerifier)
+        .sslSocketFactory(mySSLContext.getSocketFactory(), object : X509TrustManager {
+          override fun checkClientTrusted(chain: Array<X509Certificate?>?, authType: String?) {}
+          override fun checkServerTrusted(chain: Array<X509Certificate?>?, authType: String?) {}
+          override fun getAcceptedIssuers(): Array<X509Certificate> {
+            return arrayOf()
+          }
+        })
+      val okHttpClient: OkHttpClient = clientBuilder.build()
+      IO.setDefaultOkHttpCallFactory(okHttpClient)
+      IO.setDefaultOkHttpWebSocketFactory(okHttpClient)
+      val opts = IO.Options()
+      opts.forceNew = true
+      opts.callFactory = okHttpClient
+      opts.webSocketFactory = okHttpClient
+      opts.query = "token=$token"
+      mSocket = IO.socket(SERVER_URL+"/camera", opts)
+      mSocket.on(Socket.EVENT_CONNECT_ERROR, onConnectError)
+      mSocket.on(EVENT_ERROR, onEventError)
+      mSocket.on(Socket.EVENT_CONNECT, onConnect)
+      mSocket.on(EVENT_CROWD_RESPONSE, onJoinRoom)
+      mSocket.connect()
+      joinRoom()
+    } catch (e: URISyntaxException) {
+      throw RuntimeException(e)
+    } catch (e: NoSuchAlgorithmException) {
+      e.printStackTrace()
+    } catch (e: KeyManagementException) {
+      e.printStackTrace()
+    }
+  }
+
   private fun initWebSocket(){
     try {
       //      This address is the way you can connect to localhost with AVD(Android Virtual Device)
@@ -126,33 +203,50 @@ class CameraDetailFragment : BaseFragment<FragmentCameraDetailBinding, HomeViewM
       mSocket = manager.socket("/camera")
     } catch (e: Exception) {
       e.printStackTrace()
-      Log.d("fail", "Failed to connect")
+      Log.d("fail", "Failed to connect to socket server")
     }
-
-    mSocket.connect()
     mSocket.on(Socket.EVENT_CONNECT, onConnect)
-    mSocket.on("my_response", onJoinRoom)// To know if the new user entered the room.
+    mSocket.on(EVENT_CROWD_RESPONSE, onJoinRoom)
+    mSocket.on(Socket.EVENT_CONNECT_ERROR, onConnectError)
+    mSocket.on(EVENT_ERROR, onEventError)
+    mSocket.connect()
     joinRoom()
   }
 
   private fun stopWebSocket(){
     camera?.id?.let { id ->
-      mSocket.emit("leave", gson.toJson(CameraStreamRequest(id)))
+      mSocket.emit("leave", gson.toJson(CameraStreamRequest(id, camera?.rtspAddress.orEmpty())))
       mSocket.disconnect()
+      mSocket.off(Socket.EVENT_CONNECT)
+      mSocket.off(EVENT_CROWD_RESPONSE)
+      mSocket.off(Socket.EVENT_CONNECT_ERROR)
+      mSocket.off(EVENT_ERROR)
     }
   }
 
   private fun joinRoom(){
     camera?.id?.let { id ->
-      mSocket.emit("join", gson.toJson(CameraStreamRequest(id)))
+      mSocket.emit("join", gson.toJson(CameraStreamRequest(id, camera?.rtspAddress.orEmpty())))
     }
   }
 
-  var onConnect = Emitter.Listener {
+  private val onConnect = Emitter.Listener {
 //    Toast.makeText(requireContext(), "Connected", Toast.LENGTH_SHORT).show()
   }
 
-  var onJoinRoom = Emitter.Listener {
+  private val onConnectError = Emitter.Listener {
+    for (err in it){
+      Log.d("ConnectError", err.toString())
+    }
+  }
+
+  private val onEventError = Emitter.Listener {
+    for (err in it){
+      Log.d("EventError", err.toString())
+    }
+  }
+
+  private val onJoinRoom = Emitter.Listener {
     val response = gson.fromJson(it[0].toString(), CameraStreamResponse::class.java)
     lifecycleScope.launch(Dispatchers.Main) {
       with(viewBinding){

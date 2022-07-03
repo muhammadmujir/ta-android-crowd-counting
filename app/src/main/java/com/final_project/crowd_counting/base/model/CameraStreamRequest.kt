@@ -7,5 +7,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class CameraStreamRequest(
   @SerializedName("id")
-  val id: Int
+  val id: Int,
+  @SerializedName("rtspAddress")
+  val rtspAddress: String
 ): Parcelable

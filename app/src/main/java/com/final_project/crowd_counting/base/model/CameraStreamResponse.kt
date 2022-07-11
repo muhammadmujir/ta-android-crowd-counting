@@ -7,5 +7,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class CameraStreamResponse(
   @SerializedName("count")
-  val count: Int = 0
+  val count: Int = 0,
+  @SerializedName("image")
+  val image: String
 ): Parcelable

@@ -4,6 +4,8 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
@@ -14,6 +16,7 @@ import android.text.SpannableStringBuilder
 import android.text.TextUtils
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
+import android.util.Base64
 import android.util.Patterns
 import android.util.TypedValue
 import android.view.inputmethod.InputMethodManager
@@ -421,6 +424,11 @@ object Util {
       //.placeholder(R.drawable.ic_user_circle)
       .circleCrop()
       .into(this)
+  }
+
+  fun base64ToBitmap(input: String): Bitmap{
+    val decodedBytes = Base64.decode(input, Base64.DEFAULT)
+    return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
   }
 
   fun NavController.safeNavigate(@IdRes actionId: Int, arg: Bundle? = null, navOptions: NavOptions? = null){

@@ -54,6 +54,15 @@
         app:layout_constraintTop_toBottomOf="@id/tv_max_crowd_count"
         tools:text="Deskripsi Kamera"/>
 
+    <ImageView
+        android:id="@+id/iv_crowd_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_8dp"
+        app:layout_constraintEnd_toStartOf="@id/tv_crowd_count"
+        app:layout_constraintTop_toTopOf="@id/tv_crowd_count"
+        app:layout_constraintBottom_toBottomOf="@id/tv_crowd_count"/>
+
     <TextView
         android:id="@+id/tv_crowd_count"
         android:layout_width="wrap_content"
@@ -66,20 +75,35 @@
         app:layout_constraintTop_toBottomOf="@id/vv_camera"
         tools:text="Count: 100"/>
 
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="tv_desc,tv_crowd_status"/>
+
+    <ImageView
+        android:id="@+id/iv_crowd_image"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_0dp"
+        android:layout_marginTop="@dimen/margin_8dp"
+        android:layout_marginBottom="@dimen/margin_8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/barrier"
+        app:layout_constraintVertical_bias="0.0" />
+
     <TextView
         android:id="@+id/tv_crowd_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/BaseTextViewStyle.Content"
-        android:text="@string/safe_crowd_status"
+        android:text="@string/loading"
         android:textColor="@color/colorGreenDark_3E8606"
-        android:padding="@dimen/padding_10dp"
         android:layout_margin="@dimen/margin_10dp"
         android:gravity="center_horizontal"
-        app:drawableTopCompat="@drawable/ic_check_shield"
-        android:drawablePadding="@dimen/padding_6dp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/tv_crowd_count"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/tv_crowd_count" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

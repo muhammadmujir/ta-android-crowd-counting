@@ -18,6 +18,7 @@ import com.final_project.crowd_counting.base.constant.Constant.SERVER_URL
 import com.final_project.crowd_counting.base.model.Camera
 import com.final_project.crowd_counting.base.model.CameraStreamRequest
 import com.final_project.crowd_counting.base.model.CameraStreamResponse
+import com.final_project.crowd_counting.base.utils.Util.base64ToBitmap
 import com.final_project.crowd_counting.base.utils.Util.orDefaultInt
 import com.final_project.crowd_counting.base.view.BaseFragment
 import com.final_project.crowd_counting.databinding.FragmentCameraDetailBinding
@@ -52,6 +53,7 @@ import javax.net.ssl.X509TrustManager
 const val ARG_CAMERA = "argCamera"
 private const val KEY_OUT_OF_MAX = "outOfMax"
 private const val EVENT_CROWD_RESPONSE = "my_response"
+private const val KEY_CROWD_INDICATOR_SET = "crowdIndicatorSet"
 
 @AndroidEntryPoint
 class CameraDetailFragment : BaseFragment<FragmentCameraDetailBinding, HomeViewModel>() {
@@ -62,11 +64,13 @@ class CameraDetailFragment : BaseFragment<FragmentCameraDetailBinding, HomeViewM
   private val gson = Gson()
   private val camera: Camera? by lazy { arguments?.getParcelable(ARG_CAMERA) }
   private var isOutOfMaxCrowd = false
+  private var isCrowdIndicatorSet = false
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     savedInstanceState?.let {
       isOutOfMaxCrowd = it.getBoolean(KEY_OUT_OF_MAX)
+      isCrowdIndicatorSet = it.getBoolean(KEY_CROWD_INDICATOR_SET)
     }
   }
 
@@ -75,7 +79,6 @@ class CameraDetailFragment : BaseFragment<FragmentCameraDetailBinding, HomeViewM
     initCameraData()
     initVideoView()
 //    initWebSocket()
-    initialSocket("")
   }
 
   override fun getVM(): HomeViewModel = viewModel
@@ -118,6 +121,17 @@ class CameraDetailFragment : BaseFragment<FragmentCameraDetailBinding, HomeViewM
     val media = Media(libVLC, Uri.parse(camera?.rtspAddress))
     media.setHWDecoderEnabled(true, false)
 //    media.addOption(":network-caching=600")
+    mediaPlayer.setEventListener { event ->
+      when(event.type){
+        MediaPlayer.Event.Playing -> {
+//          Log.d("MediaPlaying", "yes")
+          initialSocket("")
+        }
+        else -> {
+
+        }
+      }
+    }
     mediaPlayer.media = media
     media.release()
     mediaPlayer.play()
@@ -250,19 +264,20 @@ class CameraDetailFragment : BaseFragment<FragmentCameraDetailBinding, HomeViewM
     val response = gson.fromJson(it[0].toString(), CameraStreamResponse::class.java)
     lifecycleScope.launch(Dispatchers.Main) {
       with(viewBinding){
-        if (isOutOfMaxCrowd != response.count > camera?.maxCrowdCount.orDefaultInt(100000)){
+        ivCrowdImage.setImageBitmap(base64ToBitmap(response.image))
+        if (!isCrowdIndicatorSet || isOutOfMaxCrowd != response.count > camera?.maxCrowdCount.orDefaultInt(100000)){
+          isCrowdIndicatorSet = true
           isOutOfMaxCrowd = response.count > camera?.maxCrowdCount.orDefaultInt(100000)
-          Log.d("Coba", "coba: "+isOutOfMaxCrowd)
           if (isOutOfMaxCrowd){
             tvCrowdCount.background = ContextCompat.getDrawable(root.context, R.drawable.bg_box_contained_red)
             tvCrowdCount.setTextColor(ContextCompat.getColor(root.context, android.R.color.white))
-            tvCrowdStatus.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(root.context, R.drawable.ic_cross_octa_red), null, null)
+            ivCrowdIndicator.setImageDrawable(ContextCompat.getDrawable(root.context, R.drawable.ic_cross_octa_red))
             tvCrowdStatus.text = getString(R.string.dangerous_crowd_status)
             tvCrowdStatus.setTextColor(ContextCompat.getColor(root.context, R.color.colorRedDark_C42625))
           } else {
             tvCrowdCount.background = ContextCompat.getDrawable(root.context, R.drawable.bg_box_contained_yellow)
             tvCrowdCount.setTextColor(ContextCompat.getColor(root.context, R.color.colorTextPrimary))
-            tvCrowdStatus.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(root.context, R.drawable.ic_check_shield), null, null)
+            ivCrowdIndicator.setImageDrawable(ContextCompat.getDrawable(root.context, R.drawable.ic_check_shield))
             tvCrowdStatus.text = getString(R.string.safe_crowd_status)
             tvCrowdStatus.setTextColor(ContextCompat.getColor(root.context, R.color.colorGreenDark_3E8606))
           }
@@ -275,6 +290,7 @@ class CameraDetailFragment : BaseFragment<FragmentCameraDetailBinding, HomeViewM
   override fun onSaveInstanceState(outState: Bundle) {
     super.onSaveInstanceState(outState)
     outState.putBoolean(KEY_OUT_OF_MAX, isOutOfMaxCrowd)
+    outState.putBoolean(KEY_CROWD_INDICATOR_SET, isCrowdIndicatorSet)
   }
 
   override fun onStop() {

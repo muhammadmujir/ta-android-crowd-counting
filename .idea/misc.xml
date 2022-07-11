@@ -58,10 +58,11 @@
         <entry key="..\:/Users/Mujir/StudioProjects/ta-android-crowd-counting/app/src/main/res/drawable/ic_check_shield.xml" value="0.1945" />
         <entry key="..\:/Users/Mujir/StudioProjects/ta-android-crowd-counting/app/src/main/res/drawable/ic_cross_octa_red.xml" value="0.1945" />
         <entry key="..\:/Users/Mujir/StudioProjects/ta-android-crowd-counting/app/src/main/res/layout/fragment_camera_detail.xml" value="0.25" />
+        <entry key="..\:/Users/Mujir/StudioProjects/ta-android-crowd-counting/app/src/main/res/layout/fragment_camera_form.xml" value="0.17074275362318841" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

@@ -15,6 +15,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/vv_camera"
+        app:layout_constraintEnd_toEndOf="@id/vv_camera"
+        app:layout_constraintTop_toTopOf="@id/vv_camera"
+        app:layout_constraintBottom_toBottomOf="@id/vv_camera"/>
+
     <TextView
         android:id="@+id/tv_location"
         android:layout_width="wrap_content"
@@ -80,7 +89,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="tv_desc,tv_crowd_status"/>
+        app:constraint_referenced_ids="tv_desc,tv_time"/>
 
     <ImageView
         android:id="@+id/iv_crowd_image"
@@ -105,5 +114,17 @@
         app:layout_constraintStart_toStartOf="@id/tv_crowd_count"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_crowd_count" />
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/BaseTextViewStyle.Content"
+        android:textStyle="bold"
+        android:layout_margin="@dimen/margin_6dp"
+        android:gravity="center_horizontal"
+        app:layout_constraintStart_toStartOf="@id/tv_crowd_count"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_crowd_status" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

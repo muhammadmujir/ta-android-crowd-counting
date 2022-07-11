@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -19,6 +20,7 @@ import com.final_project.crowd_counting.base.model.Camera
 import com.final_project.crowd_counting.base.model.CameraStreamRequest
 import com.final_project.crowd_counting.base.model.CameraStreamResponse
 import com.final_project.crowd_counting.base.utils.Util.base64ToBitmap
+import com.final_project.crowd_counting.base.utils.Util.millisToDate
 import com.final_project.crowd_counting.base.utils.Util.orDefaultInt
 import com.final_project.crowd_counting.base.view.BaseFragment
 import com.final_project.crowd_counting.databinding.FragmentCameraDetailBinding
@@ -124,11 +126,8 @@ class CameraDetailFragment : BaseFragment<FragmentCameraDetailBinding, HomeViewM
     mediaPlayer.setEventListener { event ->
       when(event.type){
         MediaPlayer.Event.Playing -> {
-//          Log.d("MediaPlaying", "yes")
+          viewBinding.progressBar.isVisible = false
           initialSocket("")
-        }
-        else -> {
-
         }
       }
     }
@@ -266,6 +265,7 @@ class CameraDetailFragment : BaseFragment<FragmentCameraDetailBinding, HomeViewM
     val response = gson.fromJson(it[0].toString(), CameraStreamResponse::class.java)
     lifecycleScope.launch(Dispatchers.Main) {
       with(viewBinding){
+        tvTime.text = millisToDate(response.time * 1000, "yyyy-MM-dd HH:mm:ss")
         ivCrowdImage.setImageBitmap(base64ToBitmap(response.image))
         if (!isCrowdIndicatorSet || isOutOfMaxCrowd != response.count > camera?.maxCrowdCount.orDefaultInt(100000)){
           isCrowdIndicatorSet = true

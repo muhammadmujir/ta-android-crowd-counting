@@ -26,7 +26,7 @@ class HomeViewModel @Inject constructor(private val repository: HomeRepository):
     getPublicCameraList()
   }
 
-  fun getCameraListByOwner(){
+  private fun getCameraListByOwner(){
     launchPagingAsync(
       { repository.getCameraListByOwner().cachedIn(viewModelScope) },
       {
@@ -37,7 +37,7 @@ class HomeViewModel @Inject constructor(private val repository: HomeRepository):
     )
   }
 
-  fun getPublicCameraList(){
+  private fun getPublicCameraList(){
     launchPagingAsync(
       { repository.getPublicCameraList().cachedIn(viewModelScope) },
       {

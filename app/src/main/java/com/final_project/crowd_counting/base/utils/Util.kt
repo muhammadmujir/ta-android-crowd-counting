@@ -421,7 +421,7 @@ object Util {
   fun ImageView.loadCircularImage(url: String){
     Glide.with(context)
       .load(url)
-      //.placeholder(R.drawable.ic_user_circle)
+      .placeholder(R.drawable.ic_profile_contained)
       .circleCrop()
       .into(this)
   }

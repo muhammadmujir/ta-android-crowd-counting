@@ -181,6 +181,7 @@
                     android:background="@null"/>
 
                 <View
+                    android:id="@+id/v_line_break_1"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_3dp"
                     android:background="@color/colorBlackLight_D1D1CF"/>

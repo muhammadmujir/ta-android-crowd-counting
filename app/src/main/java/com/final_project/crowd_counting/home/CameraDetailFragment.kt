@@ -229,12 +229,14 @@ class CameraDetailFragment : BaseFragment<FragmentCameraDetailBinding, HomeViewM
 
   private fun stopWebSocket(){
     camera?.id?.let { id ->
-      mSocket.emit("leave", gson.toJson(CameraStreamRequest(id, camera?.rtspAddress.orEmpty())))
-      mSocket.disconnect()
-      mSocket.off(Socket.EVENT_CONNECT)
-      mSocket.off(EVENT_CROWD_RESPONSE)
-      mSocket.off(Socket.EVENT_CONNECT_ERROR)
-      mSocket.off(EVENT_ERROR)
+      if (this::mSocket.isInitialized){
+        mSocket.emit("leave", gson.toJson(CameraStreamRequest(id, camera?.rtspAddress.orEmpty())))
+        mSocket.disconnect()
+        mSocket.off(Socket.EVENT_CONNECT)
+        mSocket.off(EVENT_CROWD_RESPONSE)
+        mSocket.off(Socket.EVENT_CONNECT_ERROR)
+        mSocket.off(EVENT_ERROR)
+      }
     }
   }
 

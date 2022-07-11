@@ -124,6 +124,8 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, UserViewModel>() {
           it.second.body?.data?.let { user ->
             with(viewBinding) {
               if (it.first in 0..1) {
+                btnMyCamera.isVisible = user.role == 1
+                vLineBreak1.isVisible = user.role == 1
                 ivProfile.loadCircularImage(USER_IMAGE + it.second.body?.data?.id)
                 tvEmail.text = user.email
                 tvName.text = user.name

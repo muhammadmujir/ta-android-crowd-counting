@@ -64,6 +64,7 @@
     <string name="safe_crowd_status">Kerumunan Aman</string>
     <string name="dangerous_crowd_status">Kerumunan Berbahaya</string>
     <string name="loading">Memuat…</string>
+    <string name="no_update">Tidak ada update</string>
 
     <string name="nav_label_home">Beranda</string>
     <string name="nav_label_statistic">Statistik</string>

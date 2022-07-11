@@ -118,43 +118,66 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, UserViewModel>() {
   }
 
   private fun initObserver(){
-    viewModel.updateUser.observe(viewLifecycleOwner, { event ->
+    viewModel.updateUser.observe(viewLifecycleOwner) { event ->
       event.peekContent().let {
-        if (it.second.status == ResponseWrapper.Status.SUCCESS){
+        if (it.second.status == ResponseWrapper.Status.SUCCESS) {
           it.second.body?.data?.let { user ->
-            with(viewBinding){
-              if (it.first in 0..1){
-                ivProfile.loadCircularImage(USER_IMAGE+it.second.body?.data?.id)
+            with(viewBinding) {
+              if (it.first in 0..1) {
+                ivProfile.loadCircularImage(USER_IMAGE + it.second.body?.data?.id)
                 tvEmail.text = user.email
                 tvName.text = user.name
-                if (isSubmit){
+                if (isSubmit) {
                   isEditProfile = false
                   isSubmit = false
                 }
                 setProfileFormVisibility()
               }
-              if (it.first == 1 && !event.hasBeenHandled)
-                Toast.makeText(requireContext(), getString(R.string.message_update_success, "profile"), Toast.LENGTH_SHORT).show()
-              if (it.first == 2 && !event.hasBeenHandled)
-                Toast.makeText(requireContext(), getString(R.string.message_update_success, "password"), Toast.LENGTH_SHORT).show()
+              event.getContentIfNotHandled()?.let { _ ->
+                if (it.first == 1)
+                  Toast.makeText(
+                    requireContext(),
+                    getString(R.string.message_update_success, "profile"),
+                    Toast.LENGTH_SHORT
+                  ).show()
+                if (it.first == 2)
+                  Toast.makeText(
+                    requireContext(),
+                    getString(R.string.message_update_success, "password"),
+                    Toast.LENGTH_SHORT
+                  ).show()
+              }
             }
           }
         } else {
-          if (!event.hasBeenHandled)
-            Toast.makeText(requireContext(), it.second.body?.errors?.getOrNull(0).toString(), Toast.LENGTH_SHORT).show()
+          event.getContentIfNotHandled()?.let { _ ->
+            Toast.makeText(
+              requireContext(),
+              it.second.body?.errors?.getOrNull(0).toString(),
+              Toast.LENGTH_SHORT
+            ).show()
+          }
         }
       }
-    })
+    }
 
-    viewModel.updatePicture.observe(viewLifecycleOwner, {
+    viewModel.updatePicture.observe(viewLifecycleOwner) {
       it.getContentIfNotHandled()?.let {
-        if (it.status == ResponseWrapper.Status.SUCCESS){
-          Toast.makeText(requireContext(), getString(R.string.message_update_success, "picture"), Toast.LENGTH_SHORT).show()
+        if (it.status == ResponseWrapper.Status.SUCCESS) {
+          Toast.makeText(
+            requireContext(),
+            getString(R.string.message_update_success, "picture"),
+            Toast.LENGTH_SHORT
+          ).show()
         } else {
-          Toast.makeText(requireContext(), it.body?.errors?.getOrNull(0)?.toString(), Toast.LENGTH_SHORT).show()
+          Toast.makeText(
+            requireContext(),
+            it.body?.errors?.getOrNull(0)?.toString(),
+            Toast.LENGTH_SHORT
+          ).show()
         }
       }
-    })
+    }
   }
 
   private fun showEditProfileForm(){

@@ -79,29 +79,49 @@ class CameraFormFragment : BaseFragment<FragmentCameraFormBinding, CameraViewMod
   }
 
   private fun initObser(){
-    viewModel.camera.observe(viewLifecycleOwner, { event ->
+    viewModel.camera.observe(viewLifecycleOwner) { event ->
       event.getContentIfNotHandled()?.let {
-        if (it.second.status == ResponseWrapper.Status.SUCCESS){
+        if (it.second.status == ResponseWrapper.Status.SUCCESS) {
           uploadImage()
           if (it.first == CREATE_KEY)
-            Toast.makeText(requireContext(), getString(R.string.message_create_success, getString(R.string.camera)), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+              requireContext(),
+              getString(R.string.message_create_success, getString(R.string.camera)),
+              Toast.LENGTH_SHORT
+            ).show()
           else
-            Toast.makeText(requireContext(), getString(R.string.message_update_success, getString(R.string.camera)), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+              requireContext(),
+              getString(R.string.message_update_success, getString(R.string.camera)),
+              Toast.LENGTH_SHORT
+            ).show()
         } else {
-          Toast.makeText(requireContext(), it.second.body?.errors?.firstOrNull().toString(), Toast.LENGTH_SHORT).show()
+          Toast.makeText(
+            requireContext(),
+            it.second.body?.errors?.firstOrNull().toString(),
+            Toast.LENGTH_SHORT
+          ).show()
         }
       }
-    })
+    }
 
-    viewModel.updatePicture.observe(viewLifecycleOwner, { event ->
+    viewModel.updatePicture.observe(viewLifecycleOwner) { event ->
       event.getContentIfNotHandled()?.let {
-        if (it.status == ResponseWrapper.Status.SUCCESS){
-          Toast.makeText(requireContext(), getString(R.string.message_update_success, "image"), Toast.LENGTH_SHORT).show()
+        if (it.status == ResponseWrapper.Status.SUCCESS) {
+          Toast.makeText(
+            requireContext(),
+            getString(R.string.message_update_success, "image"),
+            Toast.LENGTH_SHORT
+          ).show()
         } else {
-          Toast.makeText(requireContext(), it.body?.errors?.firstOrNull().toString(), Toast.LENGTH_SHORT).show()
+          Toast.makeText(
+            requireContext(),
+            it.body?.errors?.firstOrNull().toString(),
+            Toast.LENGTH_SHORT
+          ).show()
         }
       }
-    })
+    }
   }
 
   private fun initData(){
@@ -134,13 +154,14 @@ class CameraFormFragment : BaseFragment<FragmentCameraFormBinding, CameraViewMod
     with(viewBinding){
       camera?.let {
         if (
-          !etRtspAddress.text.toString().equals(it.rtspAddress) ||
-          !etLocation.text.toString().equals(it.location) ||
-          !etArea.text.toString().equals(it.area.toString()) ||
-          !etMaxCrowd.text.toString().equals(it.maxCrowdCount.toString()) ||
-          !etDesc.text.toString().equals(it.description) ||
-          !swActive.isChecked != it.isActive ||
-          !swPublic.isChecked != it.isPublic){
+          etRtspAddress.text.toString() != it.rtspAddress ||
+          etLocation.text.toString() != it.location ||
+          etArea.text.toString() != it.area.toString() ||
+          etMaxCrowd.text.toString() != it.maxCrowdCount.toString() ||
+          etDesc.text.toString() != it.description ||
+          swActive.isChecked != it.isActive ||
+          swPublic.isChecked != it.isPublic ||
+          imagePath != null){
           return true
         }
       }
@@ -191,6 +212,8 @@ class CameraFormFragment : BaseFragment<FragmentCameraFormBinding, CameraViewMod
     camera?.id?.let {
       if (validateEmptyField() && isThereUpdate()) {
         viewModel.updateCamera(it, generateCameraRequest())
+      } else {
+        Toast.makeText(requireContext(), getString(R.string.no_update), Toast.LENGTH_SHORT).show()
       }
     } ?: run {
       if (validateEmptyField()){

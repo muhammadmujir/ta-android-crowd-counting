@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "182217623307",
+    "project_id": "crowd-counting-601e4",
+    "storage_bucket": "crowd-counting-601e4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:182217623307:android:b377e354cb3e563863040e",
+        "android_client_info": {
+          "package_name": "com.final_project.crowd_counting"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "182217623307-bmd52nq981s6cir6nob6u7d1knq5brs0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvwTPXdbUlKEFnaYOtVDZgS72i5nGng64"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "182217623307-bmd52nq981s6cir6nob6u7d1knq5brs0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

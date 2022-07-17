@@ -70,6 +70,5 @@
     <string name="nav_label_statistic">Statistik</string>
     <string name="nav_label_profile">Profil</string>
     <string name="nav_label_cart">Keranjang</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="minimize">Sembunyikan</string>
 </resources>

@@ -1,7 +1,10 @@
 package com.final_project.crowd_counting.home
 
+import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +28,7 @@ import com.final_project.crowd_counting.base.utils.Util.orDefaultInt
 import com.final_project.crowd_counting.base.view.BaseFragment
 import com.final_project.crowd_counting.databinding.FragmentCameraDetailBinding
 import com.final_project.crowd_counting.home.viewmodel.HomeViewModel
+import com.final_project.crowd_counting.window.ForegroundService
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import io.socket.client.IO
@@ -54,7 +58,7 @@ import javax.net.ssl.X509TrustManager
 
 const val ARG_CAMERA = "argCamera"
 private const val KEY_OUT_OF_MAX = "outOfMax"
-private const val EVENT_CROWD_RESPONSE = "my_response"
+const val EVENT_CROWD_RESPONSE = "my_response"
 private const val KEY_CROWD_INDICATOR_SET = "crowdIndicatorSet"
 
 @AndroidEntryPoint
@@ -96,6 +100,16 @@ class CameraDetailFragment : BaseFragment<FragmentCameraDetailBinding, HomeViewM
           findNavController().popBackStack()
         }, true)
         setTitleAndDescription(getString(R.string.camera_detail), null)
+        inflateMenu(R.menu.toolbar_menu, false)
+        setOnMenuItemClickListener(this@CameraDetailFragment
+        ) { item ->
+          if (item?.itemId == R.id.option_minimize) {
+            Log.d("masukItem", "Yes")
+            checkOverlayPermission()
+            startService()
+          }
+          false
+        }
       }
     })
     return FragmentCameraDetailBinding.inflate(inflater, container, false)
@@ -287,6 +301,41 @@ class CameraDetailFragment : BaseFragment<FragmentCameraDetailBinding, HomeViewM
         tvCrowdCount.text = getString(R.string.crowd_is, response.count.toString())
       }
     }
+  }
+
+  fun checkOverlayPermission() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      if (!Settings.canDrawOverlays(requireContext())) {
+        // send user to the device settings
+        val myIntent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION)
+        startActivity(myIntent)
+      } else {
+        Log.d("notNeedPermission", "Yes")
+      }
+    } else {
+      Log.d("aboveM", "Yes")
+    }
+  }
+
+  fun startService() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      // check if the user has already granted
+      // the Draw over other apps permission
+      if (Settings.canDrawOverlays(requireContext())) {
+        // start the service based on the android version
+        val intent = Intent(requireContext(), ForegroundService::class.java).apply {
+          putExtra(ARG_CAMERA, camera)
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+          requireContext().startForegroundService(intent)
+        } else {
+          requireContext().startService(intent)
+        }
+      }
+    } else {
+      requireContext().startService(Intent(requireContext(), ForegroundService::class.java))
+    }
+    requireActivity().finish()
   }
 
   override fun onSaveInstanceState(outState: Bundle) {

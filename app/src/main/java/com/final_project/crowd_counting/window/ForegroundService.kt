@@ -13,12 +13,14 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.final_project.crowd_counting.R
 import com.final_project.crowd_counting.base.constant.Constant
 import com.final_project.crowd_counting.base.model.Camera
 import com.final_project.crowd_counting.base.model.CameraStreamRequest
 import com.final_project.crowd_counting.base.model.CameraStreamResponse
+import com.final_project.crowd_counting.base.utils.Util.orDefaultInt
 import com.final_project.crowd_counting.home.ARG_CAMERA
 import com.final_project.crowd_counting.home.EVENT_CROWD_RESPONSE
 import com.google.gson.Gson
@@ -51,6 +53,8 @@ class ForegroundService : Service() {
     private var job: Job? = null
     private var camera: Camera? = null
     private lateinit var window: Window
+    private var isOutOfMaxCrowd = false
+    private var isCrowdIndicatorSet = false
 
     override fun onBind(intent: Intent?): IBinder {
         throw UnsupportedOperationException("Not yet implemented")
@@ -74,6 +78,7 @@ class ForegroundService : Service() {
                 isVisible = !isVisible
             }
         }
+        window.mView.findViewById<ImageButton>(R.id.window_close).isVisible = false
         Log.d("onCreateService", "yes")
     }
 
@@ -113,7 +118,7 @@ class ForegroundService : Service() {
         startForeground(2, notification)
     }
 
-    fun initialSocket(token: String) {
+    private fun initialSocket(token: String) {
         try {
             val myHostnameVerifier = HostnameVerifier { hostname, session -> true }
             val mySSLContext: SSLContext = SSLContext.getInstance("TLS")
@@ -201,38 +206,24 @@ class ForegroundService : Service() {
         val response = gson.fromJson(it[0].toString(), CameraStreamResponse::class.java)
         job = CoroutineScope(Dispatchers.Main).launch {
             Log.d("CrowdResponse: ", response.count.toString())
-            window.mView.findViewById<TextView>(R.id.titleText).run {
-                text = response.count.toString()
+            val parentView = window.mView.findViewById<androidx.cardview.widget.CardView>(R.id.cv_parent)
+            val crowdTextView = window.mView.findViewById<TextView>(R.id.titleText)
+            if (!isCrowdIndicatorSet || isOutOfMaxCrowd != response.count > camera?.maxCrowdCount.orDefaultInt(100000)){
+                isCrowdIndicatorSet = true
+                isOutOfMaxCrowd = response.count > camera?.maxCrowdCount.orDefaultInt(100000)
+                if (isOutOfMaxCrowd){
+                    ContextCompat.getColorStateList(parentView.context, R.color.colorRedDark_C42625)?.let {
+                        parentView.setCardBackgroundColor(it)
+                    }
+                    crowdTextView.setTextColor(ContextCompat.getColor(parentView.context, android.R.color.white))
+                } else {
+                    ContextCompat.getColorStateList(parentView.context, android.R.color.white)?.let {
+                        parentView.setCardBackgroundColor(it)
+                    }
+                    crowdTextView.setTextColor(ContextCompat.getColor(parentView.context, R.color.colorTextPrimary))
+                }
             }
-//            with(viewBinding){
-//                tvTime.text = com.final_project.crowd_counting.base.utils.Util.millisToDate(
-//                    response.time * 1000,
-//                    "yyyy-MM-dd HH:mm:ss"
-//                )
-//                ivCrowdImage.setImageBitmap(
-//                    com.final_project.crowd_counting.base.utils.Util.base64ToBitmap(
-//                        response.image
-//                    )
-//                )
-//                if (!isCrowdIndicatorSet || isOutOfMaxCrowd != response.count > camera?.maxCrowdCount.orDefaultInt(100000)){
-//                    isCrowdIndicatorSet = true
-//                    isOutOfMaxCrowd = response.count > camera?.maxCrowdCount.orDefaultInt(100000)
-//                    if (isOutOfMaxCrowd){
-//                        tvCrowdCount.background = androidx.core.content.ContextCompat.getDrawable(root.context, com.final_project.crowd_counting.R.drawable.bg_box_contained_red)
-//                        tvCrowdCount.setTextColor(androidx.core.content.ContextCompat.getColor(root.context, android.R.color.white))
-//                        ivCrowdIndicator.setImageDrawable(androidx.core.content.ContextCompat.getDrawable(root.context, com.final_project.crowd_counting.R.drawable.ic_cross_octa_red))
-//                        tvCrowdStatus.text = getString(com.final_project.crowd_counting.R.string.dangerous_crowd_status)
-//                        tvCrowdStatus.setTextColor(androidx.core.content.ContextCompat.getColor(root.context, com.final_project.crowd_counting.R.color.colorRedDark_C42625))
-//                    } else {
-//                        tvCrowdCount.background = androidx.core.content.ContextCompat.getDrawable(root.context, com.final_project.crowd_counting.R.drawable.bg_box_contained_yellow)
-//                        tvCrowdCount.setTextColor(androidx.core.content.ContextCompat.getColor(root.context, com.final_project.crowd_counting.R.color.colorTextPrimary))
-//                        ivCrowdIndicator.setImageDrawable(androidx.core.content.ContextCompat.getDrawable(root.context, com.final_project.crowd_counting.R.drawable.ic_check_shield))
-//                        tvCrowdStatus.text = getString(com.final_project.crowd_counting.R.string.safe_crowd_status)
-//                        tvCrowdStatus.setTextColor(androidx.core.content.ContextCompat.getColor(root.context, com.final_project.crowd_counting.R.color.colorGreenDark_3E8606))
-//                    }
-//                }
-//                tvCrowdCount.text = getString(com.final_project.crowd_counting.R.string.crowd_is, response.count.toString())
-//            }
+            crowdTextView.text = response.count.toString()
         }
     }
 

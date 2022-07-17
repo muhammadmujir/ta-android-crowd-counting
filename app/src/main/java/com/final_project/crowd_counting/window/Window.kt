@@ -33,7 +33,7 @@ class Window(context: Context) {
         }
     }
 
-    fun close() {
+    private fun close() {
         try {
             // remove the view from the window
             (context.getSystemService(WINDOW_SERVICE) as WindowManager).removeView(mView)

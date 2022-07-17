@@ -9,12 +9,14 @@ import android.content.Intent
 import android.os.Build
 import android.os.IBinder
 import android.util.Log
+import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import com.final_project.crowd_counting.MainActivity
 import com.final_project.crowd_counting.R
 import com.final_project.crowd_counting.base.constant.Constant
 import com.final_project.crowd_counting.base.model.Camera
@@ -45,6 +47,7 @@ import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
+const val STOP_SERVICE = "stopService"
 
 class ForegroundService : Service() {
 
@@ -74,8 +77,20 @@ class ForegroundService : Service() {
         window = Window(this)
         window.open()
         window.mView.findViewById<androidx.cardview.widget.CardView>(R.id.cv_parent).setOnClickListener {
+            window.mView.findViewById<ImageButton>(R.id.window_open).run {
+                isVisible = !isVisible
+            }
             window.mView.findViewById<ImageButton>(R.id.window_close).run {
                 isVisible = !isVisible
+            }
+        }
+        window.mView.findViewById<ImageButton>(R.id.window_open).run {
+            isVisible = false
+            setOnClickListener {
+                startActivity(
+                    Intent(this@ForegroundService, MainActivity::class.java)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).apply { putExtra(ARG_CAMERA, camera) }
+                )
             }
         }
         window.mView.findViewById<ImageButton>(R.id.window_close).isVisible = false
@@ -87,6 +102,13 @@ class ForegroundService : Service() {
         intent?.getParcelableExtra<Camera>(ARG_CAMERA)?.let { cam ->
             camera = cam
             initialSocket("")
+        } ?: run {
+            if (intent?.getBooleanExtra(STOP_SERVICE, false) == true){
+                (getSystemService(WINDOW_SERVICE) as WindowManager).removeView(window.mView)
+                window.mView.invalidate()
+                stopForeground(true)
+                stopSelf()
+            }
         }
         return super.onStartCommand(intent, flags, startId)
     }

@@ -1,7 +1,9 @@
 package com.final_project.crowd_counting
 
+import android.app.ActivityManager
+import android.app.Service
+import android.content.Intent
 import android.graphics.drawable.Drawable
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextWatcher
 import android.util.Log
@@ -18,11 +20,16 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.final_project.crowd_counting.base.communicator.IToolbarCommunicator
+import com.final_project.crowd_counting.base.model.Camera
 import com.final_project.crowd_counting.base.utils.Util.loadCircularImage
 import com.final_project.crowd_counting.base.view.BaseActivity
 import com.final_project.crowd_counting.databinding.ActivityMainBinding
+import com.final_project.crowd_counting.home.ARG_CAMERA
+import com.final_project.crowd_counting.window.ForegroundService
+import com.final_project.crowd_counting.window.STOP_SERVICE
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
+import kotlin.reflect.KClass
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity(), IToolbarCommunicator {
@@ -38,6 +45,31 @@ class MainActivity : BaseActivity(), IToolbarCommunicator {
     viewBinding = ActivityMainBinding.inflate(layoutInflater)
     setContentView(viewBinding.root)
     initNavigationView()
+    stopExistingForegroundService(ForegroundService::class.java)
+    toCameraDetailFragment()
+  }
+
+  private fun stopExistingForegroundService(serviceClass: Class<*>){
+    val manager = (getSystemService(ACTIVITY_SERVICE) as ActivityManager)
+    Log.d("totalService", manager.getRunningServices(Int.MAX_VALUE).size.toString())
+    for (sv in manager.getRunningServices(Int.MAX_VALUE)){
+      if (serviceClass.name.equals(sv.service.className)){
+        Log.d("serviceFound", "yes")
+        startForegroundService(Intent(this, ForegroundService::class.java).apply {
+          putExtra(STOP_SERVICE, true)
+        })
+        break
+      } else {
+        Log.d("serviceNotFound", "yes")
+        break
+      }
+    }
+  }
+
+  private fun toCameraDetailFragment(){
+    intent.getParcelableExtra<Camera>(ARG_CAMERA)?.let {
+      navController.navigate(R.id.to_camera_detail, Bundle().apply { putParcelable(ARG_CAMERA, it) })
+    }
   }
 
   private fun initNavigationView(){

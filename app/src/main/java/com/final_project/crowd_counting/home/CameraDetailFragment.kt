@@ -280,7 +280,7 @@ class CameraDetailFragment : BaseFragment<FragmentCameraDetailBinding, HomeViewM
     lifecycleScope.launch(Dispatchers.Main) {
       with(viewBinding){
         tvTime.text = millisToDate(response.time * 1000, "yyyy-MM-dd HH:mm:ss")
-        ivCrowdImage.setImageBitmap(base64ToBitmap(response.image))
+//        ivCrowdImage.setImageBitmap(base64ToBitmap(response.image))
         if (!isCrowdIndicatorSet || isOutOfMaxCrowd != response.count > camera?.maxCrowdCount.orDefaultInt(100000)){
           isCrowdIndicatorSet = true
           isOutOfMaxCrowd = response.count > camera?.maxCrowdCount.orDefaultInt(100000)
